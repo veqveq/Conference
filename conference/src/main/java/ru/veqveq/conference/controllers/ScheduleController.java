@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.veqveq.conference.dto.ScheduleItemDto;
 import ru.veqveq.conference.dto.TalkDto;
-import ru.veqveq.conference.facades.UsersSchedulesFacade;
+import ru.veqveq.conference.services.facades.UsersSchedulesFacade;
 import ru.veqveq.conference.services.ScheduleService;
 
 import java.security.Principal;
@@ -24,7 +24,12 @@ public class ScheduleController {
         return scheduleService.findAll();
     }
 
-    @GetMapping("/speaker/myTalks")
+    @GetMapping("/speaker/my_speaks")
+    public List<TalkDto> getMySpeaks(Principal principal) {
+        return schedulesFacade.getSpeaks(principal);
+    }
+
+    @GetMapping("/my_talks")
     public List<TalkDto> getMyTalks(Principal principal) {
         return schedulesFacade.getTalks(principal);
     }

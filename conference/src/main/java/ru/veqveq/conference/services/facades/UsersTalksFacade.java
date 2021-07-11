@@ -1,4 +1,4 @@
-package ru.veqveq.conference.facades;
+package ru.veqveq.conference.services.facades;
 
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class UsersTalksFacade {
     private final TalkService talkService;
 
     @Transactional
-    public void becomeListener(Principal principal, Long talkId) {
+    public void subscribeAsListener(Principal principal, Long talkId) {
         try {
             String name = principal.getName();
             User user = userService.findByLogin(name);
