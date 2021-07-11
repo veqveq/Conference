@@ -2,7 +2,7 @@ package ru.veqveq.conference.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.veqveq.conference.dto.NewRoleDto;
+import ru.veqveq.conference.dto.ChangeRoleDto;
 import ru.veqveq.conference.dto.UserDto;
 import ru.veqveq.conference.exceptions.ChangeRoleException;
 import ru.veqveq.conference.exceptions.ResourceNotFoundException;
@@ -26,13 +26,13 @@ public class UserController {
     }
 
     @PostMapping
-    public void changeRole(Principal principal, @RequestBody NewRoleDto newRoleDto) {
+    public void changeRole(Principal principal, @RequestBody ChangeRoleDto changeRoleDto) {
         User user = userService.findByLogin(principal.getName())
                 .orElseThrow(() -> new ResourceNotFoundException("User by username: " + principal.getName() + " not exist"));
-        if (user.getId().equals(newRoleDto.getUserId())) {
-            throw new ChangeRoleException("Смена роли своей учетной записи запрещена!");
+        if (user.getId().equals(changeRoleDto.getUserId())) {
+            throw new ChangeRoleException("Changing your own role is prohibited");
         }
-        usersRolesFacade.changeRole(newRoleDto);
+        usersRolesFacade.changeRole(changeRoleDto);
     }
 
 }

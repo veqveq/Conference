@@ -18,4 +18,16 @@ public class ExceptionControllerAdvice {
         ConferenceError error = new ConferenceError(HttpStatus.CONFLICT.value(), e.getMessage());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handleTimeIntervalException(TimeIntervalException e) {
+        ConferenceError error = new ConferenceError(HttpStatus.CONFLICT.value(), e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handleTimeIntervalIntersectionException(TimeIntervalIntersectionException e) {
+        ConferenceError error = new ConferenceError(HttpStatus.CONFLICT.value(), e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
 }

@@ -42,4 +42,9 @@ public class ScheduleItem {
             }
         }
     }
+
+    public void setTimeInterval(TimeInterval timeInterval) {
+        setStartTime(timeInterval.startTime);
+        setEndTime(timeInterval.endTime);
+    }
 }

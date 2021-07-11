@@ -2,9 +2,10 @@ package ru.veqveq.conference.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.veqveq.conference.dto.RoomDto;
 import ru.veqveq.conference.dto.ScheduleItemDto;
 import ru.veqveq.conference.dto.TalkDto;
-import ru.veqveq.conference.services.UserService;
+import ru.veqveq.conference.services.facades.CreatorScheduleFacade;
 import ru.veqveq.conference.services.facades.UsersSchedulesFacade;
 import ru.veqveq.conference.services.ScheduleService;
 
@@ -17,9 +18,10 @@ import java.util.List;
 public class ScheduleController {
     private final ScheduleService scheduleService;
     private final UsersSchedulesFacade schedulesFacade;
+    private final CreatorScheduleFacade creatorFacade;
 
     @GetMapping
-    public List<ScheduleItemDto> findAll() {
+    public List<RoomDto> findAll() {
         return scheduleService.findAll();
     }
 
@@ -41,5 +43,10 @@ public class ScheduleController {
     @PostMapping("/unsub_as_listener")
     public void unsubscribeAsListener(Principal principal, @RequestParam Long talkId) {
         schedulesFacade.unsubscribeAsListener(principal, talkId);
+    }
+
+    @PutMapping("/my_speaks")
+    public void createSchedule(Principal principal, @RequestBody ScheduleItemDto newSchedule) {
+        creatorFacade.createSchedule(principal, newSchedule);
     }
 }

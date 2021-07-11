@@ -1,10 +1,11 @@
 package ru.veqveq.conference.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.veqveq.conference.models.User;
-import ru.veqveq.conference.models.UserInfo;
 
 @Data
+@NoArgsConstructor
 public class UserDto {
     private Long id;
     private String login;

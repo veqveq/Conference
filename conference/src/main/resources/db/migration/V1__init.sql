@@ -63,7 +63,7 @@ create table schedule_tbl
 
 create table schedule_listeners_tbl
 (
-    schedule_id_fld     bigint not null,
+    schedule_id_fld bigint not null,
     listener_id_fld bigint not null,
     foreign key (schedule_id_fld) references schedule_tbl (id_fld),
     foreign key (listener_id_fld) references users_tbl (id_fld)

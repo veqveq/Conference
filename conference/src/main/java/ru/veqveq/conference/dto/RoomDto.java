@@ -2,6 +2,7 @@ package ru.veqveq.conference.dto;
 
 import lombok.Data;
 import ru.veqveq.conference.models.Room;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,11 +10,11 @@ import java.util.stream.Collectors;
 public class RoomDto {
     private Short id;
     private String number;
-    private List<ScheduleItemDto> talks;
+    private List<ScheduleItemDto> scheduleItems;
 
     public RoomDto(Room room) {
         this.id = room.getId();
         this.number = room.getNumber();
-        this.talks = room.getScheduleItemList().stream().map(ScheduleItemDto::new).collect(Collectors.toList());
+        this.scheduleItems = room.getScheduleItemList().stream().map(ScheduleItemDto::new).collect(Collectors.toList());
     }
 }

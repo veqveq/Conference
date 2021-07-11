@@ -15,4 +15,8 @@ public class TalkService {
     public Optional<Talk> findById(Long id) {
         return talkRepository.findById(id);
     }
+
+    public void save(Talk talk) {
+        talkRepository.save(talk);
+    }
 }
