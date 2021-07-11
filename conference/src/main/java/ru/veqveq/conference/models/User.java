@@ -27,9 +27,4 @@ public class User {
             joinColumns = @JoinColumn(name = "listener_id_fld"),
             inverseJoinColumns = @JoinColumn(name = "schedule_id_fld"))
     private List<ScheduleItem> talksAsListener;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "talks_speakers_tbl",
-            joinColumns = @JoinColumn(name = "speaker_id_fld"),
-            inverseJoinColumns = @JoinColumn(name = "talk_id_fld"))
-    private List<Talk> talksAsSpeaker;
 }

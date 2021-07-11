@@ -35,4 +35,9 @@ public class UserController {
         usersRolesFacade.changeRole(changeRoleDto);
     }
 
+    @GetMapping("/speakers")
+    public List<UserDto> findAllSpeakers() {
+        return userService.findAllByRole("ROLE_SPEAKER");
+    }
+
 }

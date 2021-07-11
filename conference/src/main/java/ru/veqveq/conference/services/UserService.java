@@ -24,10 +24,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
     public List<UserDto> findAll() {
-        return userRepository.findAll().stream()
+        return userRepository.findAll()
+                .stream()
+                .map(UserDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserDto> findAllByRole(String role) {
+        return userRepository.findAllByRole_Role(role)
+                .stream()
                 .map(UserDto::new)
                 .collect(Collectors.toList());
     }
@@ -40,7 +47,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByLogin(login);
     }
 
-    public void save(User user) {
+    public void saveOrUpdate(User user) {
         userRepository.save(user);
     }
 

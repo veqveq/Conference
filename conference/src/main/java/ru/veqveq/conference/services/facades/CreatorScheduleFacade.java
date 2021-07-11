@@ -38,9 +38,9 @@ public class CreatorScheduleFacade {
                                         () -> new ResourceNotFoundException("User by login: " + principal.getName() + " does not exist")))
                 .collect(Collectors.toList());
 
-        speakers.add(userService.findByLogin(
+        User owner = userService.findByLogin(
                 principal.getName()).orElseThrow(
-                () -> new ResourceNotFoundException("User by login: " + principal.getName() + " not exist")));
+                () -> new ResourceNotFoundException("User by login: " + principal.getName() + " not exist"));
 
         Room currentRoom = roomService.findByNumber(scheduleItemDto.getRoom())
                 .orElseThrow(
@@ -57,15 +57,19 @@ public class CreatorScheduleFacade {
                     }
                 });
 
-        Talk newTalk = new Talk();
-        newTalk.setSpeakers(speakers);
-        newTalk.setText(scheduleItemDto.getTalkDto().getText());
+        Talk newTalk = new Talk.Builder()
+                .setText(scheduleItemDto.getTalkDto().getText())
+                .setOwner(owner)
+                .setSpeakers(speakers)
+                .build();
         talkService.save(newTalk);
 
-        ScheduleItem newScheduleItem = new ScheduleItem();
-        newScheduleItem.setRoom(currentRoom);
-        newScheduleItem.setTalk(newTalk);
-        newScheduleItem.setTimeInterval(newInterval);
+        ScheduleItem newScheduleItem = new ScheduleItem.Builder()
+                .setRoom(currentRoom)
+                .setTalk(newTalk)
+                .setTimeInterval(newInterval)
+                .build();
+
         scheduleService.save(newScheduleItem);
     }
 }

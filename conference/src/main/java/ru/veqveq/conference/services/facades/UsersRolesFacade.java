@@ -24,6 +24,6 @@ public class UsersRolesFacade {
         Role newRole = roleService.findById(changeRoleDto.getRoleId())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Role by id: %s not found", changeRoleDto.getRoleId())));
         user.setRole(newRole);
-        userService.save(user);
+        userService.saveOrUpdate(user);
     }
 }

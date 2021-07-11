@@ -36,9 +36,11 @@ create table rooms_tbl
 
 create table talks_tbl
 (
-    id_fld   bigint  not null auto_increment,
-    text_fld varchar not null,
-    primary key (id_fld)
+    id_fld       bigint  not null auto_increment,
+    text_fld     varchar not null,
+    owner_id_fld bigint  not null,
+    primary key (id_fld),
+    foreign key (owner_id_fld) references users_tbl (id_fld)
 );
 
 create table talks_speakers_tbl

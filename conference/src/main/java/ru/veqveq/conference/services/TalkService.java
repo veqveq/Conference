@@ -19,4 +19,8 @@ public class TalkService {
     public void save(Talk talk) {
         talkRepository.save(talk);
     }
+
+    public void remove(Long talkId) {
+        talkRepository.deleteById(talkId);
+    }
 }

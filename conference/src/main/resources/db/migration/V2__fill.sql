@@ -26,12 +26,12 @@ values ('11a'),
        ('16/2'),
        ('2');
 
-insert into talks_tbl(text_fld)
-values ('Talk 1'),
-       ('Talk 2'),
-       ('Talk 3'),
-       ('Talk 4'),
-       ('Talk 5');
+insert into talks_tbl(text_fld, owner_id_fld)
+values ('Talk 1', 2),
+       ('Talk 2', 2),
+       ('Talk 3', 2),
+       ('Talk 4', 3),
+       ('Talk 5', 3);
 
 insert into talks_speakers_tbl(talk_id_fld, speaker_id_fld)
 values (1, 2),
