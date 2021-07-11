@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
-//import java.util.List;
 
 @Entity
 @Table(name = "rooms_tbl")
@@ -18,9 +17,4 @@ public class Room {
     private String number;
     @OneToMany(mappedBy = "room")
     private List<ScheduleItem> scheduleItemList;
-//    @ManyToMany
-//    @JoinTable(name = "schedule_tbl",
-//            joinColumns = @JoinColumn(name = "room_id_fld"),
-//            inverseJoinColumns = @JoinColumn(name = "talk_id_fld"))
-//    private List<Talk> talks;
 }

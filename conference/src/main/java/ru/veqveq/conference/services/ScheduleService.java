@@ -2,7 +2,7 @@ package ru.veqveq.conference.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.veqveq.conference.dto.ScheduleItemDto;
+import ru.veqveq.conference.dto.RoomDto;
 import ru.veqveq.conference.models.ScheduleItem;
 import ru.veqveq.conference.models.User;
 import ru.veqveq.conference.repositories.ScheduleRepository;
@@ -16,10 +16,11 @@ import java.util.stream.Collectors;
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
-    public List<ScheduleItemDto> findAll() {
+    public List<RoomDto> findAll() {
         return scheduleRepository.findAll().stream()
-                .map(ScheduleItemDto::new)
+                .map(ScheduleItem::getRoom)
                 .distinct()
+                .map(RoomDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -27,8 +28,8 @@ public class ScheduleService {
         return scheduleRepository.findAllByTalk_Speakers(speaker);
     }
 
-    public List<ScheduleItem> findAllByListener(User listener) {
-        return scheduleRepository.findAllByListenersContains(listener);
+    public void save(ScheduleItem scheduleItem) {
+        scheduleRepository.save(scheduleItem);
     }
 
     public Optional<ScheduleItem> findById(Long id) {

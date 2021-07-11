@@ -1,6 +1,5 @@
 package ru.veqveq.conference.services;
 
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,8 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.veqveq.conference.dto.NewRoleDto;
 import ru.veqveq.conference.dto.UserDto;
 import ru.veqveq.conference.exceptions.ResourceNotFoundException;
 import ru.veqveq.conference.models.Role;
