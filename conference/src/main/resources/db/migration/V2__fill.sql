@@ -1,9 +1,9 @@
 insert into users_tbl(login_fld, password_fld)
-values ('u1', '100'),
-       ('u2', '200'),
-       ('u3', '300'),
-       ('u4', '400'),
-       ('u5', '500');
+values ('u1', '$2y$12$fdgMU9AMXKxZ9Jur1eaO5O2gs9xfifsV7Wh52rJ4wjf.Acv4c8WuS'), //100
+       ('u2', '$2y$12$OVuHWBHzBtmcHsyeslCMeOkXLERbBDPg8rSML36rTWJXuPbN5/XXq'), //200
+       ('u3', '$2y$12$u.hqdbXNO/d8YDGiuNuNLuV8HyA3fHT6dgeCGj5j8cVhdAr/NRXpC'), //300
+       ('u4', '$2y$12$jXyB.gesY2X6qc46XsI0K.acYce8lWGJ9K7azCACLpwk5x9tKlmjq'), //400
+       ('u5', '$2y$12$/uml2Bkb/FO78dMF5e0HI.ckIKi1ceqTaYMSweW2xPMXOF6nqicxa'); //500
 
 insert into user_info_tbl(user_id_fld, first_name_fld, last_name_fld, age_fld, phone_fld)
 values (1, 'Name1', 'Surname1', '20', '+7(800)555-35-35');

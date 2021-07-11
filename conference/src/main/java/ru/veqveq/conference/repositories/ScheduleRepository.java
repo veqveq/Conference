@@ -12,4 +12,6 @@ public interface ScheduleRepository extends CrudRepository<ScheduleItem, Long> {
     List<ScheduleItem> findAll();
 
     List<ScheduleItem> findAllByTalk_Speakers(User speaker);
+
+    List<ScheduleItem> findAllByTalk_Listeners(User listener);
 }
