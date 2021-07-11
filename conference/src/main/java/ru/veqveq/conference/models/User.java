@@ -1,7 +1,6 @@
 package ru.veqveq.conference.models;
 
 import lombok.Data;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,21 +17,17 @@ public class User {
     private String login;
     @Column(name = "password_fld")
     private String password;
-    @ManyToMany
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @JoinTable(name = "users_roles_tbl",
-            joinColumns = @JoinColumn(name = "user_id_fld"),
-            inverseJoinColumns = @JoinColumn(name = "role_id_fld"))
-    private List<Role> roles;
-    @OneToOne(mappedBy = "user", orphanRemoval = true)
+    @OneToOne
+    @JoinColumn(name = "role_id_fld")
+    private Role role;
+    @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
     private UserInfo userInfo;
-    @ManyToMany
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @JoinTable(name = "schedules_listeners_tbl",
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "schedule_listeners_tbl",
             joinColumns = @JoinColumn(name = "listener_id_fld"),
             inverseJoinColumns = @JoinColumn(name = "schedule_id_fld"))
     private List<ScheduleItem> talksAsListener;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "talks_speakers_tbl",
             joinColumns = @JoinColumn(name = "speaker_id_fld"),
             inverseJoinColumns = @JoinColumn(name = "talk_id_fld"))

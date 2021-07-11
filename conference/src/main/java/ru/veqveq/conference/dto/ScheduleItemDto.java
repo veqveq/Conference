@@ -2,28 +2,24 @@ package ru.veqveq.conference.dto;
 
 import lombok.Data;
 import ru.veqveq.conference.models.ScheduleItem;
-import java.util.Objects;
+
+import java.time.LocalDateTime;
 
 @Data
 public class ScheduleItemDto {
     private Long id;
-    private RoomDto roomDto;
+    private String room;
+    private TalkDto talkDto;
+    private int listenersCount;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     public ScheduleItemDto(ScheduleItem scheduleItem) {
         this.id = scheduleItem.getId();
-        this.roomDto = new RoomDto(scheduleItem.getRoom());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ScheduleItemDto that = (ScheduleItemDto) o;
-        return Objects.equals(roomDto, that.roomDto);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(roomDto);
+        this.room = scheduleItem.getRoom().getNumber();
+        this.talkDto = new TalkDto(scheduleItem.getTalk());
+        this.listenersCount = scheduleItem.getListeners().size();
+        this.startTime = scheduleItem.getStartTime();
+        this.endTime = scheduleItem.getEndTime();
     }
 }

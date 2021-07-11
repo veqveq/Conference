@@ -1,9 +1,18 @@
+create table roles_tbl
+(
+    id_fld   tinyint      not null auto_increment,
+    role_fld varchar(255) not null,
+    primary key (id_fld)
+);
+
 create table users_tbl
 (
     id_fld       bigint       not null auto_increment,
     login_fld    varchar(255) not null unique,
     password_fld varchar(255) not null,
-    primary key (id_fld)
+    role_id_fld  tinyint      not null,
+    primary key (id_fld),
+    foreign key (role_id_fld) references roles_tbl (id_fld)
 );
 
 create table user_info_tbl
@@ -18,22 +27,6 @@ create table user_info_tbl
     foreign key (user_id_fld) references users_tbl (id_fld)
 );
 
-
-create table roles_tbl
-(
-    id_fld   tinyint      not null auto_increment,
-    role_fld varchar(255) not null,
-    primary key (id_fld)
-);
-
-create table users_roles_tbl
-(
-    user_id_fld bigint  not null,
-    role_id_fld tinyint not null,
-    foreign key (user_id_fld) references users_tbl (id_fld),
-    foreign key (role_id_fld) references roles_tbl (id_fld)
-);
-
 create table rooms_tbl
 (
     id_fld     smallint     not null auto_increment,
@@ -43,10 +36,8 @@ create table rooms_tbl
 
 create table talks_tbl
 (
-    id_fld         bigint   not null auto_increment,
-    text_fld       varchar  not null,
-    start_time_fld datetime not null,
-    end_time_fld   datetime not null,
+    id_fld   bigint  not null auto_increment,
+    text_fld varchar not null,
     primary key (id_fld)
 );
 
@@ -60,18 +51,20 @@ create table talks_speakers_tbl
 
 create table schedule_tbl
 (
-    id_fld      bigint   not null auto_increment,
-    room_id_fld smallint not null,
-    talk_id_fld bigint   not null,
+    id_fld         bigint   not null auto_increment,
+    room_id_fld    smallint not null,
+    talk_id_fld    bigint   not null,
+    start_time_fld datetime not null,
+    end_time_fld   datetime not null,
     primary key (id_fld),
     foreign key (room_id_fld) references rooms_tbl (id_fld),
     foreign key (talk_id_fld) references talks_tbl (id_fld)
 );
 
-create table talks_listeners_tbl
+create table schedule_listeners_tbl
 (
-    talk_id_fld bigint not null,
+    schedule_id_fld     bigint not null,
     listener_id_fld bigint not null,
-    foreign key (talk_id_fld) references talks_tbl (id_fld),
+    foreign key (schedule_id_fld) references schedule_tbl (id_fld),
     foreign key (listener_id_fld) references users_tbl (id_fld)
 );

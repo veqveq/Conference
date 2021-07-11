@@ -2,8 +2,8 @@ package ru.veqveq.conference.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.veqveq.conference.models.Room;
+import ru.veqveq.conference.models.Role;
 
 @Repository
-public interface RoomRepository extends CrudRepository<Room, Short> {
+public interface RoleRepository extends CrudRepository<Role, Byte> {
 }
