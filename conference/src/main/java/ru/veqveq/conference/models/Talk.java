@@ -25,4 +25,17 @@ public class Talk {
             joinColumns = @JoinColumn(name = "talk_id_fld"),
             inverseJoinColumns = @JoinColumn(name = "speaker_id_fld"))
     private List<User> speakers;
+    @ManyToMany
+    @JoinTable(name = "talks_listeners_tbl",
+            joinColumns = @JoinColumn(name = "talk_id_fld"),
+            inverseJoinColumns = @JoinColumn(name = "listener_id_fld"))
+    private List<User> listeners;
+
+    public void addListener(User user) {
+        listeners.add(user);
+    }
+
+    public void removeListener(User user) {
+        listeners.remove(user);
+    }
 }
