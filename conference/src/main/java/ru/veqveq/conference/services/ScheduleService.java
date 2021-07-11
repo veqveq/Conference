@@ -8,6 +8,7 @@ import ru.veqveq.conference.models.User;
 import ru.veqveq.conference.repositories.ScheduleRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +28,10 @@ public class ScheduleService {
     }
 
     public List<ScheduleItem> findAllByListener(User listener) {
-        return scheduleRepository.findAllByTalk_Listeners(listener);
+        return scheduleRepository.findAllByListenersContains(listener);
+    }
+
+    public Optional<ScheduleItem> findById(Long id) {
+        return scheduleRepository.findById(id);
     }
 }
