@@ -24,7 +24,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id_fld"),
             inverseJoinColumns = @JoinColumn(name = "role_id_fld"))
     private List<Role> roles;
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", orphanRemoval = true)
     private UserInfo userInfo;
     @ManyToMany
     @Cascade(org.hibernate.annotations.CascadeType.ALL)

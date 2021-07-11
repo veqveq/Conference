@@ -68,10 +68,10 @@ create table schedule_tbl
     foreign key (talk_id_fld) references talks_tbl (id_fld)
 );
 
-create table schedules_listeners_tbl
+create table talks_listeners_tbl
 (
-    schedule_id_fld bigint not null,
+    talk_id_fld bigint not null,
     listener_id_fld bigint not null,
-    foreign key (schedule_id_fld) references schedule_tbl (id_fld),
+    foreign key (talk_id_fld) references talks_tbl (id_fld),
     foreign key (listener_id_fld) references users_tbl (id_fld)
 );

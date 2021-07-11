@@ -15,9 +15,9 @@ insert into user_info_tbl(user_id_fld, first_name_fld, age_fld)
 values (4, 'Name3', '45');
 
 insert into roles_tbl(role_fld)
-values ('Admin'),
-       ('Speaker'),
-       ('Listener');
+values ('ROLE_ADMIN'),
+       ('ROLE_SPEAKER'),
+       ('ROLE_LISTENER');
 
 insert into users_roles_tbl(user_id_fld, role_id_fld)
 values (1, 1),
