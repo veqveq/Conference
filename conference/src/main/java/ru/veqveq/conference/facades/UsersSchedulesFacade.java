@@ -3,12 +3,9 @@ package ru.veqveq.conference.facades;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.veqveq.conference.dto.RoomDto;
-import ru.veqveq.conference.dto.ScheduleItemDto;
-import ru.veqveq.conference.dto.TalkDto;
+import ru.veqveq.conference.dto.ScheduleItemResp;
 import ru.veqveq.conference.exceptions.ResourceNotFoundException;
 import ru.veqveq.conference.models.ScheduleItem;
-import ru.veqveq.conference.models.Talk;
 import ru.veqveq.conference.models.User;
 import ru.veqveq.conference.services.MailService;
 import ru.veqveq.conference.services.ScheduleService;
@@ -26,22 +23,22 @@ public class UsersSchedulesFacade {
     private final MailService mailService;
 
     @Transactional
-    public List<ScheduleItemDto> getSpeaks(Principal principal) {
+    public List<ScheduleItemResp> getSpeaks(Principal principal) {
         User user = userService.findByLogin(principal.getName())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User by name: %s not exist", principal.getName())));
         return scheduleService.findAllBySpeaker(user)
                 .stream()
-                .map(ScheduleItemDto::new)
+                .map(ScheduleItemResp::new)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<ScheduleItemDto> getTalks(Principal principal) {
+    public List<ScheduleItemResp> getTalks(Principal principal) {
         User user = userService.findByLogin(principal.getName())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User by name: %s not exist", principal.getName())));
         return user.getTalksAsListener()
                 .stream()
-                .map(ScheduleItemDto::new)
+                .map(ScheduleItemResp::new)
                 .collect(Collectors.toList());
     }
 

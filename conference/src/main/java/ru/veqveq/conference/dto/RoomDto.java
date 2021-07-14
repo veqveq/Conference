@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 public class RoomDto {
     private Short id;
     private String number;
-    private List<ScheduleItemDto> scheduleItems;
+    private List<ScheduleItemResp> scheduleItems;
 
     public RoomDto(Room room) {
         this.id = room.getId();
         this.number = room.getNumber();
-        this.scheduleItems = room.getScheduleItemList().stream().map(ScheduleItemDto::new).collect(Collectors.toList());
+        this.scheduleItems = room.getScheduleItemList().stream().map(ScheduleItemResp::new).collect(Collectors.toList());
     }
 }

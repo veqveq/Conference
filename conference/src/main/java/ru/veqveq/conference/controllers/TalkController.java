@@ -14,11 +14,6 @@ import java.security.Principal;
 public class TalkController {
     private final UsersTalksFacade usersTalksFacade;
 
-    @PostMapping
-    public void update(Principal principal, @RequestBody TalkDto talkDto) {
-        usersTalksFacade.update(principal, talkDto);
-    }
-
     @DeleteMapping
     public void delete(Principal principal, @RequestBody TalkDto talkDto) {
         usersTalksFacade.remove(principal, talkDto);

@@ -3,7 +3,8 @@ package ru.veqveq.conference.facades;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.veqveq.conference.dto.ScheduleItemDto;
+import ru.veqveq.conference.dto.ScheduleItemReq;
+import ru.veqveq.conference.dto.ScheduleItemResp;
 import ru.veqveq.conference.exceptions.ResourceNotFoundException;
 import ru.veqveq.conference.exceptions.TimeIntervalIntersectionException;
 import ru.veqveq.conference.models.*;
@@ -14,6 +15,7 @@ import ru.veqveq.conference.services.UserService;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,51 +27,31 @@ public class CreatorScheduleFacade {
     private final RoomService roomService;
 
     @Transactional
-    public void createSchedule(Principal principal, ScheduleItemDto scheduleItemResp) {
-
-        List<User> speakers = scheduleItemResp
-                .getTalkDto()
+    public void createSchedule(Principal principal, ScheduleItemReq scheduleItemReq) {
+        List<User> speakers = scheduleItemReq
                 .getSpeakers()
                 .stream()
-                .map(userDto ->
-                        userService.findByLogin(
-                                userDto.getLogin())
-                                .orElseThrow(
-                                        () -> new ResourceNotFoundException("User by login: " + principal.getName() + " does not exist")))
+                .map(id -> userService.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException("User by login: " + principal.getName() + " does not exist")))
                 .collect(Collectors.toList());
 
-        User owner = userService.findByLogin(
-                principal.getName()).orElseThrow(
-                () -> new ResourceNotFoundException("User by login: " + principal.getName() + " not exist"));
+        User owner = userService.findByLogin(principal.getName())
+                .orElseThrow(() -> new ResourceNotFoundException("User by login: " + principal.getName() + " not exist"));
 
-        Room currentRoom = roomService.findByNumber(scheduleItemResp.getRoom())
+        Room room = roomService.findByNumber(scheduleItemReq.getRoom())
                 .orElseThrow(
-                        () -> new ResourceNotFoundException("Room by number: " + scheduleItemResp.getRoom() + " does not exist"));
-        List<ScheduleItem> scheduleItems = currentRoom.getScheduleItemList();
+                        () -> new ResourceNotFoundException("Room by number: " + scheduleItemReq.getRoom() + " does not exist"));
 
-        TimeInterval newInterval = new TimeInterval(scheduleItemResp.getStartTime(), scheduleItemResp.getEndTime());
-        scheduleItems
-                .stream()
-                .map(scheduleItem -> new TimeInterval(scheduleItem.getStartTime(), scheduleItem.getEndTime()))
-                .forEach((ti) -> {
-                    if (ti.intersection(newInterval)) {
-                        throw new TimeIntervalIntersectionException(String.format("Time %s is not a free", ti.toString()));
-                    }
-                });
+        Talk talk = talkService.save(scheduleItemReq, speakers, owner);
 
-        Talk newTalk = new Talk.Builder()
-                .setText(scheduleItemResp.getTalkDto().getText())
-                .setOwner(owner)
-                .setSpeakers(speakers)
-                .build();
-        talkService.save(newTalk);
+        scheduleService.save(scheduleItemReq, room, talk);
+    }
 
-        ScheduleItem newScheduleItem = new ScheduleItem.Builder()
-                .setRoom(currentRoom)
-                .setTalk(newTalk)
-                .setTimeInterval(newInterval)
-                .build();
-
-        scheduleService.save(newScheduleItem);
+    @Transactional
+    public void updateSchedule(ScheduleItemReq scheduleItemReq) {
+        List<User> speakers = scheduleItemReq.getSpeakers().stream().map(userId -> userService.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User by id: " + userId + " not found"))).collect(Collectors.toList());
+        Talk talk = talkService.update(scheduleItemReq, speakers);
+        Room room = roomService.findByNumber(scheduleItemReq.getRoom()).orElseThrow(() -> new ResourceNotFoundException("Room by number: " + scheduleItemReq.getRoom() + " not found"));
+        scheduleService.update(scheduleItemReq, talk, room);
     }
 }

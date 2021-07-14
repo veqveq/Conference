@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                <select class="room form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                     <option ng-repeat="r in roomList" value="1">{{r}}</option>
                 </select>
                 <div class="date-changer">
@@ -19,7 +19,7 @@
                 </div>
                 <ul class="list-group" ng-repeat="speaker in speakerList">
                     <li class="list-group-item">
-                        <input class="speakers-check form-check-input me-1" type="checkbox" value="{{speaker.login}}">
+                        <input class="speakers-check form-check-input me-1" type="checkbox" value="{{speaker.id}}">
                         {{speaker.login}}
                     </li>
                 </ul>

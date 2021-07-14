@@ -21,17 +21,6 @@ public class UsersTalksFacade {
     private final TalkService talkService;
 
     @Transactional
-    public void update(Principal principal, TalkDto talkDto) {
-        Talk talk = talkService.findById(talkDto.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Talk by id: %s not found", talkDto.getId())));
-        if (!checkOwner(principal, talk.getOwner()))
-            throw new IncorrectOwnerException("Insufficient rights to edit the conference");
-        if (!talk.getText().equals(talkDto.getText())) talk.setText(talkDto.getText());
-        if (!talk.containSpeakerList(talkDto)) updateSpeakerList(talk, talkDto);
-        talkService.save(talk);
-    }
-
-    @Transactional
     public void remove(Principal principal, TalkDto talkDto) {
         if (!checkOwner(principal, talkDto))
             throw new IncorrectOwnerException("Insufficient rights to edit the conference");
