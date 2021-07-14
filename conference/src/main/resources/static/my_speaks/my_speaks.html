@@ -1,6 +1,28 @@
+<div ng-init="getRoomList()"  class="modal fade" id="changeTalk" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Изменение доклада</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+<!--                    <option selected>Open this select menu</option>-->
+                    <option ng-repeat="r in roomList" value="1">{{r}}</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div ng-init="getMySpeaks()">
     <div ng-show="mySpeaksList.length != 0">
-        <h2>Вы выступаете на конференциях:</h2>
+        <h2>Вы участвуете на конференциях:</h2>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -13,7 +35,7 @@
             </thead>
             <tbody>
             <tr ng-repeat="speak in mySpeaksList">
-                <td>{{speak.number}}</td>
+                <td>{{speak.room}}</td>
                 <td>{{speak.startTime}}</td>
                 <td>{{speak.endTime}}</td>
                 <td>
@@ -32,10 +54,11 @@
                     </div>
                 </td>
                 <td>
-<!--                    <button type="button" style="margin-right: 10px" class="btn btn-danger"-->
-<!--                            ng-click="unsubscribe(talk.talkDto.id)">-->
-<!--                        Отменить участие-->
-<!--                    </button>-->
+                    <button ng-show="checkOwner(speak.talkDto.owner)" type="button" style="margin-right: 10px"
+                            class="btn btn-primary"
+                            data-bs-toggle="modal" data-bs-target="#changeTalk" data-bs-whatever="{{speak}}">
+                        Изменить
+                    </button>
                 </td>
             </tr>
             </tbody>

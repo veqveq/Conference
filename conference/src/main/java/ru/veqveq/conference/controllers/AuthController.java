@@ -30,7 +30,16 @@ public class AuthController {
         }
         UserDetails details = userService.loadUserByUsername(request.getUsername());
         String token = jwtTokenUtil.generateToken(details);
-        return ResponseEntity.ok(new JwtResponse(token, request.getUsername()));
+        return ResponseEntity.ok(
+                new JwtResponse(
+                        token,
+                        request.getUsername(),
+                        details.getAuthorities()
+                                .toString()
+                                .substring(6)
+                                .replace("]", "")
+                )
+        );
     }
 
 }

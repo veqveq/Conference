@@ -24,8 +24,8 @@ public class ScheduleItemDto {
         this.room = scheduleItem.getRoom().getNumber();
         this.talkDto = new TalkDto(scheduleItem.getTalk());
         this.listenersCount = scheduleItem.getListeners().size();
-        this.startTime = scheduleItem.getStartTime().toString();
-        this.endTime = scheduleItem.getEndTime().toString();
+        this.startTime = scheduleItem.getStartTime().format(DATE_TIME_FORMATTER);
+        this.endTime = scheduleItem.getEndTime().format(DATE_TIME_FORMATTER);
     }
 
     public LocalDateTime getStartTime() {

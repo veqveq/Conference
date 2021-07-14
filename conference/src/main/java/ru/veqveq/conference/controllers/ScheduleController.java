@@ -26,7 +26,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/my_speaks")
-    public List<TalkDto> getMySpeaks(Principal principal) {
+    public List<ScheduleItemDto> getMySpeaks(Principal principal) {
         return schedulesFacade.getSpeaks(principal);
     }
 
@@ -35,12 +35,12 @@ public class ScheduleController {
         return schedulesFacade.getTalks(principal);
     }
 
-    @PostMapping("/sub_as_listener")
+    @PostMapping("/sub")
     public void subscribeAsListener(Principal principal, @RequestParam Long talkId) {
         schedulesFacade.subscribeAsListener(principal, talkId);
     }
 
-    @PostMapping("/unsub_as_listener")
+    @PostMapping("/unsub")
     public void unsubscribeAsListener(Principal principal, @RequestParam Long talkId) {
         schedulesFacade.unsubscribeAsListener(principal, talkId);
     }

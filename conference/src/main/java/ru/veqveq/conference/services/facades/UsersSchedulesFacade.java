@@ -3,6 +3,7 @@ package ru.veqveq.conference.services.facades;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.veqveq.conference.dto.RoomDto;
 import ru.veqveq.conference.dto.ScheduleItemDto;
 import ru.veqveq.conference.dto.TalkDto;
 import ru.veqveq.conference.exceptions.ResourceNotFoundException;
@@ -23,16 +24,12 @@ public class UsersSchedulesFacade {
     private final ScheduleService scheduleService;
 
     @Transactional
-    public List<TalkDto> getSpeaks(Principal principal) {
+    public List<ScheduleItemDto> getSpeaks(Principal principal) {
         User user = userService.findByLogin(principal.getName())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User by name: %s not exist", principal.getName())));
-        List<Talk> talks = scheduleService.findAllBySpeaker(user)
+        return scheduleService.findAllBySpeaker(user)
                 .stream()
-                .map(ScheduleItem::getTalk)
-                .collect(Collectors.toList());
-        return talks
-                .stream()
-                .map(TalkDto::new)
+                .map(ScheduleItemDto::new)
                 .collect(Collectors.toList());
     }
 

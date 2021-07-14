@@ -25,9 +25,9 @@ public class CreatorScheduleFacade {
     private final RoomService roomService;
 
     @Transactional
-    public void createSchedule(Principal principal, ScheduleItemDto scheduleItemDto) {
+    public void createSchedule(Principal principal, ScheduleItemDto scheduleItemResp) {
 
-        List<User> speakers = scheduleItemDto
+        List<User> speakers = scheduleItemResp
                 .getTalkDto()
                 .getSpeakers()
                 .stream()
@@ -42,12 +42,12 @@ public class CreatorScheduleFacade {
                 principal.getName()).orElseThrow(
                 () -> new ResourceNotFoundException("User by login: " + principal.getName() + " not exist"));
 
-        Room currentRoom = roomService.findByNumber(scheduleItemDto.getRoom())
+        Room currentRoom = roomService.findByNumber(scheduleItemResp.getRoom())
                 .orElseThrow(
-                        () -> new ResourceNotFoundException("Room by number: " + scheduleItemDto.getRoom() + " does not exist"));
+                        () -> new ResourceNotFoundException("Room by number: " + scheduleItemResp.getRoom() + " does not exist"));
         List<ScheduleItem> scheduleItems = currentRoom.getScheduleItemList();
 
-        TimeInterval newInterval = new TimeInterval(scheduleItemDto.getStartTime(), scheduleItemDto.getEndTime());
+        TimeInterval newInterval = new TimeInterval(scheduleItemResp.getStartTime(), scheduleItemResp.getEndTime());
         scheduleItems
                 .stream()
                 .map(scheduleItem -> new TimeInterval(scheduleItem.getStartTime(), scheduleItem.getEndTime()))
@@ -58,7 +58,7 @@ public class CreatorScheduleFacade {
                 });
 
         Talk newTalk = new Talk.Builder()
-                .setText(scheduleItemDto.getTalkDto().getText())
+                .setText(scheduleItemResp.getTalkDto().getText())
                 .setOwner(owner)
                 .setSpeakers(speakers)
                 .build();

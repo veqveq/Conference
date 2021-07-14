@@ -16,16 +16,30 @@
     <link rel="stylesheet" href="style.css">
     <title>Conference</title>
 </head>
-<body ng-controller="indexController">
-<h1>Приложение "Конференция"</h1>
-<header class="sticky-top">
+<body class="container" ng-controller="indexController">
+<header>
+    <h1>Приложение "Конференция"</h1>
+    <div class="auth">
+        <div ng-show = userLogged()>
+            <h4>Пользователь: {{getUser().username}}</h4>
+            <ul class="list auth-list">
+                <li>{{getUser().role}}</li>
+                <li>
+                    <button type="button" class="btn btn-danger" ng-controller="authController" ng-click="logout()">Выйти</button>
+                </li>
+            </ul>
+        </div>
+        <div ng-show="!userLogged()">
+            <a class="btn btn-info" href="#!/auth">Авторизация</a>
+        </div>
+
+    </div>
+</header>
+<div class="sticky-top">
     <div class="links-pane">
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <a class="nav-link" aria-current="page" href="#!/">Главная</a>
-            </li>
-            <li class="nav-item" role="presentation" ng-show="!userLogged()">
-                <a class="nav-link" href="#!/auth ">Авторизация</a>
             </li>
             <li class="nav-item" role="presentation" ng-show="getUserRole()=='SPEAKER'">
                 <a class="nav-link" href="#!/speaks">Проводимые доклады</a>
@@ -38,7 +52,7 @@
             </li>
         </ul>
     </div>
-</header>
+</div>
 <div class="container content">
     <ng-view></ng-view>
 </div>

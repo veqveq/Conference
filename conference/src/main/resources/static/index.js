@@ -43,7 +43,7 @@
 angular.module('conference').controller('indexController', function ($scope, $http, $localStorage) {
 
     $scope.getUser = function () {
-        return $localStorage.authUser ? $localStorage.authUser.username : null;
+        return $localStorage.authUser;
     }
 
     $scope.userLogged = function () {

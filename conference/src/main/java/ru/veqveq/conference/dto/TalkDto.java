@@ -12,11 +12,13 @@ import java.util.stream.Collectors;
 public class TalkDto {
     private Long id;
     private String text;
+    private String owner;
     private List<UserDto> speakers;
 
     public TalkDto(Talk talk) {
         this.id = talk.getId();
         this.text = talk.getText();
+        this.owner = talk.getOwner().getLogin();
         this.speakers = talk.getSpeakers().stream().map(UserDto::new).collect(Collectors.toList());
     }
 }

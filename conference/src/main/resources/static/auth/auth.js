@@ -16,4 +16,9 @@ angular.module('conference').controller('authController', function ($scope, $htt
                 window.alert("Ошибка авторизации. Неверный логин/пароль");
             });
     };
+
+    $scope.logout = function () {
+        $http.defaults.headers.common.Authorization = null;
+        delete $localStorage.authUser
+    }
 });
