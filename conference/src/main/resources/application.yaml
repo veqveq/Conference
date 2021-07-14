@@ -20,3 +20,13 @@ spring:
         web-allow-others: false
   flyway:
     enabled: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: WA.test.conf.smtp@gmail.com
+    password: veqveq123
+    protocol: smtp
+    properties:
+      "mail.transport.protocol": smtp
+      "mail.smtp.auth": true
+      "mail.smtp.starttls.enable": true

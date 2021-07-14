@@ -10,6 +10,7 @@ import ru.veqveq.conference.exceptions.ResourceNotFoundException;
 import ru.veqveq.conference.models.ScheduleItem;
 import ru.veqveq.conference.models.Talk;
 import ru.veqveq.conference.models.User;
+import ru.veqveq.conference.services.MailService;
 import ru.veqveq.conference.services.ScheduleService;
 import ru.veqveq.conference.services.UserService;
 
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class UsersSchedulesFacade {
     private final UserService userService;
     private final ScheduleService scheduleService;
+    private final MailService mailService;
 
     @Transactional
     public List<ScheduleItemDto> getSpeaks(Principal principal) {
@@ -51,6 +53,7 @@ public class UsersSchedulesFacade {
         ScheduleItem talk = scheduleService.findById(scheduleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Talk by id: " + scheduleId + " not exist"));
         talk.addListener(user);
+        mailService.greatMessage(user,talk);
     }
 
     @Transactional

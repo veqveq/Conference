@@ -23,6 +23,7 @@ create table user_info_tbl
     last_name_fld  varchar(255),
     age_fld        tinyint,
     phone_fld      varchar(255),
+    email_fld      varchar(255),
     primary key (id_fld),
     foreign key (user_id_fld) references users_tbl (id_fld)
 );
