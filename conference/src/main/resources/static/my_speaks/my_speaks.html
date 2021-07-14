@@ -1,5 +1,5 @@
-<div ng-init="getRoomList()"  class="modal fade" id="changeTalk" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<div ng-init="initialModal()" class="modal fade" id="changeTalk" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true" ng-controller="modalController">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,13 +8,27 @@
             </div>
             <div class="modal-body">
                 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-<!--                    <option selected>Open this select menu</option>-->
                     <option ng-repeat="r in roomList" value="1">{{r}}</option>
                 </select>
+                <div class="date-changer">
+                    <input ng-model="updTalk.startTime" class="time start-time" type="datetime-local"/>
+                    <input ng-model="updTalk.endTime" class="time end-time" type="datetime-local"/>
+                </div>
+                <div class="mb-3">
+                    <textarea ng-model="updTalk.text" class="text form-control" id="message-text"></textarea>
+                </div>
+                <ul class="list-group" ng-repeat="speaker in speakerList">
+                    <li class="list-group-item">
+                        <input class="speakers-check form-check-input me-1" type="checkbox" value="{{speaker.login}}">
+                        {{speaker.login}}
+                    </li>
+                </ul>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                <button type="button" class="btn btn-primary">Сохранить</button>
+                <button ng-click="update()" type="button" class="btn btn-primary">Сохранить</button>
+                <button ng-click="delete()" type="button" class="btn btn-danger">Удалить</button>
             </div>
         </div>
     </div>

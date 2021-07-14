@@ -53,7 +53,7 @@ public class UsersSchedulesFacade {
         ScheduleItem talk = scheduleService.findById(scheduleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Talk by id: " + scheduleId + " not exist"));
         talk.addListener(user);
-        mailService.greatMessage(user,talk);
+//        mailService.greatMessage(user,talk);
     }
 
     @Transactional
