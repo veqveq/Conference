@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.veqveq.conference.dto.RoomDto;
 import ru.veqveq.conference.dto.ScheduleItemDto;
-import ru.veqveq.conference.dto.TalkDto;
-import ru.veqveq.conference.services.facades.CreatorScheduleFacade;
-import ru.veqveq.conference.services.facades.UsersSchedulesFacade;
+import ru.veqveq.conference.facades.CreatorScheduleFacade;
+import ru.veqveq.conference.facades.UsersSchedulesFacade;
 import ru.veqveq.conference.services.ScheduleService;
 
 import java.security.Principal;

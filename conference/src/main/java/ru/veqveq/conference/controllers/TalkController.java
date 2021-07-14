@@ -3,7 +3,7 @@ package ru.veqveq.conference.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.veqveq.conference.dto.TalkDto;
-import ru.veqveq.conference.services.facades.UsersTalksFacade;
+import ru.veqveq.conference.facades.UsersTalksFacade;
 
 import java.security.Principal;
 

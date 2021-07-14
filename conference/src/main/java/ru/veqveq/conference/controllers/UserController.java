@@ -8,7 +8,7 @@ import ru.veqveq.conference.exceptions.ChangeRoleException;
 import ru.veqveq.conference.exceptions.ResourceNotFoundException;
 import ru.veqveq.conference.models.User;
 import ru.veqveq.conference.services.UserService;
-import ru.veqveq.conference.services.facades.UsersRolesFacade;
+import ru.veqveq.conference.facades.UsersRolesFacade;
 
 import java.security.Principal;
 import java.util.List;

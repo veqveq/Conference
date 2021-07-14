@@ -1,4 +1,4 @@
-package ru.veqveq.conference.services.facades;
+package ru.veqveq.conference.facades;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
