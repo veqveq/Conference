@@ -1,6 +1,7 @@
 package ru.veqveq.conference.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.veqveq.conference.exceptions.ConferenceError;
 import ru.veqveq.conference.security.JwtRequest;
 import ru.veqveq.conference.security.JwtResponse;
 import ru.veqveq.conference.security.JwtTokenUtil;
@@ -27,10 +29,21 @@ public class AuthController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         } catch (BadCredentialsException e) {
             e.printStackTrace();
+            ConferenceError error = new ConferenceError(HttpStatus.BAD_REQUEST.value(),"Bad credentials");
+            return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
         }
         UserDetails details = userService.loadUserByUsername(request.getUsername());
         String token = jwtTokenUtil.generateToken(details);
-        return ResponseEntity.ok(new JwtResponse(token, request.getUsername()));
+        return ResponseEntity.ok(
+                new JwtResponse(
+                        token,
+                        request.getUsername(),
+                        details.getAuthorities()
+                                .toString()
+                                .substring(6)
+                                .replace("]", "")
+                )
+        );
     }
 
 }

@@ -15,6 +15,8 @@ create table users_tbl
     foreign key (role_id_fld) references roles_tbl (id_fld)
 );
 
+create index users_login_index on users_tbl (login_fld);
+
 create table user_info_tbl
 (
     id_fld         bigint not null auto_increment,
@@ -23,6 +25,7 @@ create table user_info_tbl
     last_name_fld  varchar(255),
     age_fld        tinyint,
     phone_fld      varchar(255),
+    email_fld      varchar(255),
     primary key (id_fld),
     foreign key (user_id_fld) references users_tbl (id_fld)
 );
@@ -34,11 +37,15 @@ create table rooms_tbl
     primary key (id_fld)
 );
 
+create index rooms_number_index on rooms_tbl (number_fld);
+
 create table talks_tbl
 (
-    id_fld   bigint  not null auto_increment,
-    text_fld varchar not null,
-    primary key (id_fld)
+    id_fld       bigint  not null auto_increment,
+    text_fld     varchar not null,
+    owner_id_fld bigint  not null,
+    primary key (id_fld),
+    foreign key (owner_id_fld) references users_tbl (id_fld)
 );
 
 create table talks_speakers_tbl

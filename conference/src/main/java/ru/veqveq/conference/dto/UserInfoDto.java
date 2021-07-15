@@ -11,11 +11,13 @@ public class UserInfoDto {
     private String lastName;
     private Byte age;
     private String phone;
+    private String eMail;
 
     public UserInfoDto(UserInfo userInfo) {
         if (userInfo.getFirstName() != null) this.firstName = userInfo.getFirstName();
         if (userInfo.getLastName() != null) this.lastName = userInfo.getLastName();
         if (userInfo.getAge() != null) this.age = userInfo.getAge();
         if (userInfo.getPhone() != null) this.phone = userInfo.getPhone();
+        if (userInfo.getEMail() != null) this.eMail = userInfo.getEMail();
     }
 }

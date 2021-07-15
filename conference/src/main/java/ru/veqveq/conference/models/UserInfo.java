@@ -23,5 +23,7 @@ public class UserInfo {
     private Byte age;
     @Column(name = "phone_fld")
     private String phone;
+    @Column(name = "email_fld")
+    private String eMail;
 
 }

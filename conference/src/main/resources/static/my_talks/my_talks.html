@@ -1,0 +1,47 @@
+<div ng-init="getMyTalks()">
+    <div ng-show="myTalksList.length != 0">
+        <h2>Вы зарегистрировались на конференции:</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Аудитория</th>
+                <th scope="col">Начало</th>
+                <th scope="col">Окончание</th>
+                <th scope="col">Доклад</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="talk in myTalksList">
+                <td>{{talk.room}}</td>
+                <td>{{talk.startTime}}</td>
+                <td>{{talk.endTime}}</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            {{talk.talkDto.text}}
+                        </button>
+                        <div class="dropdown-menu p-4 text-muted" style="max-width: 400px;">
+                            <p>Спикеры</p>
+                            <ul ng-repeat="speaker in talk.talkDto.speakers">
+                                <li>{{speaker.login}} {{speaker.userInfo.firstName}} {{speaker.userInfo.lastName}}</li>
+                            </ul>
+                            <p> Участников: {{talk.listenersCount}} </p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <button type="button" style="margin-right: 10px" class="btn btn-danger"
+                            ng-click="unsubscribe(talk.talkDto.id)">
+                        Отменить участие
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-show="myTalksList.length == 0">
+        <h2>Вы не зарегистрировались ни на одну конференцию</h2>
+    </div>
+</div>

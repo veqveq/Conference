@@ -3,10 +3,10 @@ package ru.veqveq.conference.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.veqveq.conference.dto.RoomDto;
-import ru.veqveq.conference.dto.ScheduleItemDto;
-import ru.veqveq.conference.dto.TalkDto;
-import ru.veqveq.conference.services.facades.CreatorScheduleFacade;
-import ru.veqveq.conference.services.facades.UsersSchedulesFacade;
+import ru.veqveq.conference.dto.ScheduleItemReq;
+import ru.veqveq.conference.dto.ScheduleItemResp;
+import ru.veqveq.conference.facades.CreatorScheduleFacade;
+import ru.veqveq.conference.facades.UsersSchedulesFacade;
 import ru.veqveq.conference.services.ScheduleService;
 
 import java.security.Principal;
@@ -26,27 +26,37 @@ public class ScheduleController {
     }
 
     @GetMapping("/my_speaks")
-    public List<TalkDto> getMySpeaks(Principal principal) {
+    public List<ScheduleItemResp> getMySpeaks(Principal principal) {
         return schedulesFacade.getSpeaks(principal);
     }
 
     @GetMapping("/my_talks")
-    public List<ScheduleItemDto> getMyTalks(Principal principal) {
+    public List<ScheduleItemResp> getMyTalks(Principal principal) {
         return schedulesFacade.getTalks(principal);
     }
 
-    @PostMapping("/sub_as_listener")
+    @PostMapping("/sub")
     public void subscribeAsListener(Principal principal, @RequestParam Long talkId) {
         schedulesFacade.subscribeAsListener(principal, talkId);
     }
 
-    @PostMapping("/unsub_as_listener")
+    @PostMapping("/unsub")
     public void unsubscribeAsListener(Principal principal, @RequestParam Long talkId) {
         schedulesFacade.unsubscribeAsListener(principal, talkId);
     }
 
     @PutMapping("/my_speaks")
-    public void createSchedule(Principal principal, @RequestBody ScheduleItemDto newSchedule) {
+    public void createSchedule(Principal principal, @RequestBody ScheduleItemReq newSchedule) {
         creatorFacade.createSchedule(principal, newSchedule);
+    }
+
+    @PostMapping("/my_speaks")
+    public void updateSchedule(@RequestBody ScheduleItemReq newSchedule) {
+        creatorFacade.updateSchedule(newSchedule);
+    }
+
+    @DeleteMapping
+    public void delete(Principal principal, @RequestParam Long talkId) {
+        creatorFacade.remove(principal, talkId);
     }
 }

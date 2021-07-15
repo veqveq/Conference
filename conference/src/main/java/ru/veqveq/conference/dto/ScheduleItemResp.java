@@ -9,8 +9,8 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 @NoArgsConstructor
-public class ScheduleItemDto {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+public class ScheduleItemResp {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private Long id;
     private String room;
@@ -19,13 +19,13 @@ public class ScheduleItemDto {
     private String startTime;
     private String endTime;
 
-    public ScheduleItemDto(ScheduleItem scheduleItem) {
+    public ScheduleItemResp(ScheduleItem scheduleItem) {
         this.id = scheduleItem.getId();
         this.room = scheduleItem.getRoom().getNumber();
         this.talkDto = new TalkDto(scheduleItem.getTalk());
         this.listenersCount = scheduleItem.getListeners().size();
-        this.startTime = scheduleItem.getStartTime().toString();
-        this.endTime = scheduleItem.getEndTime().toString();
+        this.startTime = scheduleItem.getStartTime().format(DATE_TIME_FORMATTER);
+        this.endTime = scheduleItem.getEndTime().format(DATE_TIME_FORMATTER);
     }
 
     public LocalDateTime getStartTime() {

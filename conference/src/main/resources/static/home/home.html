@@ -1,0 +1,39 @@
+<div ng-init="getSchedule()">
+    <h2>Расписание</h2>
+    <ul class="list" ng-repeat="r in scheduleList">
+        <li>
+            <h3>Аудитория №{{r.number}}</h3>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Начало</th>
+                    <th scope="col">Окончание</th>
+                    <th scope="col">Доклад</th>
+                    <th scope="col">Спикеры</th>
+                    <th scope="col">Количество слушателей</th>
+                    <th scope="col" ng-controller="indexController" ng-show="userLogged()"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="si in r.scheduleItems">
+                    <td>{{si.startTime}}</td>
+                    <td>{{si.endTime}}</td>
+                    <td>{{si.talkDto.text}}</td>
+                    <td>
+                        <ul ng-repeat="speaker in si.talkDto.speakers">
+                            <li>{{speaker.login}} {{speaker.userInfo.firstName}} {{speaker.userInfo.lastName}}</li>
+                        </ul>
+                    </td>
+                    <td>{{si.listenersCount}}</td>
+                    <td ng-controller="indexController" ng-show="userLogged()">
+                        <button ng-controller="homeController" type="button" style="margin-right: 10px" class="btn btn-success"
+                                ng-click="subscribe(si.talkDto.id)">
+                            Зарегистрироваться
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </li>
+    </ul>
+</div>

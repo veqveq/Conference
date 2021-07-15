@@ -1,0 +1,122 @@
+<div ng-init="initialModal()" class="modal fade" id="changeTalk" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true" ng-controller="modalController">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Изменение доклада</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <select class="room form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                    <option ng-repeat="r in roomList" value="1">{{r}}</option>
+                </select>
+                <div class="date-changer">
+                    <input class="time start-time" type="datetime-local"/>
+                    <input class="time end-time" type="datetime-local"/>
+                </div>
+                <div class="mb-3">
+                    <textarea class="text form-control" id="message-text"></textarea>
+                </div>
+                <ul class="list-group" ng-repeat="speaker in speakerList">
+                    <li class="list-group-item">
+                        <input class="speakers-check form-check-input me-1" type="checkbox" value="{{speaker.id}}">
+                        {{speaker.login}}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button ng-click="update()" type="button" class="btn btn-primary">Сохранить</button>
+                <button ng-click="delete()" type="button" class="btn btn-danger">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-init="getMySpeaks()">
+    <div ng-show="mySpeaksList.length != 0">
+        <h2>Вы участвуете на конференциях:</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Аудитория</th>
+                <th scope="col">Начало</th>
+                <th scope="col">Окончание</th>
+                <th scope="col">Доклад</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="speak in mySpeaksList">
+                <td>{{speak.room}}</td>
+                <td>{{speak.startTime}}</td>
+                <td>{{speak.endTime}}</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            {{speak.talkDto.text}}
+                        </button>
+                        <div class="dropdown-menu p-4 text-muted" style="max-width: 400px;">
+                            <p>Спикеры</p>
+                            <ul ng-repeat="speaker in speak.talkDto.speakers">
+                                <li>{{speaker.login}} {{speaker.userInfo.firstName}} {{speaker.userInfo.lastName}}</li>
+                            </ul>
+                            <p> Участников: {{speak.listenersCount}} </p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <button ng-show="checkOwner(speak.talkDto.owner)" type="button" style="margin-right: 10px"
+                            class="btn btn-primary"
+                            data-bs-toggle="modal" data-bs-target="#changeTalk" data-bs-whatever="{{speak}}">
+                        Изменить
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div ng-show="myTalksList.length == 0">
+        <h2>Вы не выступаете ни на одной конференции</h2>
+    </div>
+
+    <div ng-click="initialModal()" class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
+                    + Создать новый доклад
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <form ng-submit="createTalk()">
+                        <select id="room-select" class="new-room form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+                            <option ng-repeat="r in roomList" value="1">{{r}}</option>
+                        </select>
+                        <div class="date-changer">
+                            <input class="time new-start-time" type="datetime-local" required/>
+                            <input class="time new-end-time" type="datetime-local" required/>
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="new-text form-control" id="message-text2" required></textarea>
+                        </div>
+                        <ul class="list-group" ng-repeat="speaker in speakerList">
+                            <li class="list-group-item">
+                                <input class="new-speakers-check form-check-input me-1" type="checkbox"
+                                       value="{{speaker.id}}">
+                                {{speaker.login}}
+                            </li>
+                        </ul>
+                        <button type="button" class="btn btn-danger">Очистить</button>
+                        <button type="submit" class="btn btn-primary">Создать доклад</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

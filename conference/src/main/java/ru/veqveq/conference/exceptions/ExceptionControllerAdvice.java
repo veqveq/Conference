@@ -30,4 +30,16 @@ public class ExceptionControllerAdvice {
         ConferenceError error = new ConferenceError(HttpStatus.CONFLICT.value(), e.getMessage());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handleIncorrectOwnerException(IncorrectOwnerException e) {
+        ConferenceError error = new ConferenceError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handleSubscribeException(SubscribeException e) {
+        ConferenceError error = new ConferenceError(HttpStatus.CONFLICT.value(), e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
 }

@@ -1,0 +1,47 @@
+* {
+    font-family: system-ui;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1140px;
+}
+
+.links-pane{
+    display: flex;
+    justify-content: space-around;
+    justify-items: stretch;
+}
+
+.nav{
+    position: relative;
+    width: 100%;
+    display: flex;
+}
+
+.nav-item{
+    flex-grow: 1;
+    text-align: center;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.auth{
+    align-self: center;
+}
+
+.list{
+    list-style-type: none;
+}
+
+.auth-list{
+    display: flex;
+    justify-content: space-between;
+}
+

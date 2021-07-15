@@ -1,19 +1,21 @@
-package ru.veqveq.conference.services.facades;
+package ru.veqveq.conference.facades;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.veqveq.conference.dto.ScheduleItemDto;
-import ru.veqveq.conference.dto.TalkDto;
+import ru.veqveq.conference.dto.ScheduleItemResp;
 import ru.veqveq.conference.exceptions.ResourceNotFoundException;
+import ru.veqveq.conference.exceptions.SubscribeException;
 import ru.veqveq.conference.models.ScheduleItem;
-import ru.veqveq.conference.models.Talk;
 import ru.veqveq.conference.models.User;
+import ru.veqveq.conference.services.MailService;
 import ru.veqveq.conference.services.ScheduleService;
 import ru.veqveq.conference.services.UserService;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,28 +23,25 @@ import java.util.stream.Collectors;
 public class UsersSchedulesFacade {
     private final UserService userService;
     private final ScheduleService scheduleService;
+    private final MailService mailService;
 
     @Transactional
-    public List<TalkDto> getSpeaks(Principal principal) {
+    public List<ScheduleItemResp> getSpeaks(Principal principal) {
         User user = userService.findByLogin(principal.getName())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User by name: %s not exist", principal.getName())));
-        List<Talk> talks = scheduleService.findAllBySpeaker(user)
+        return scheduleService.findAllBySpeaker(user)
                 .stream()
-                .map(ScheduleItem::getTalk)
-                .collect(Collectors.toList());
-        return talks
-                .stream()
-                .map(TalkDto::new)
+                .map(ScheduleItemResp::new)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<ScheduleItemDto> getTalks(Principal principal) {
+    public List<ScheduleItemResp> getTalks(Principal principal) {
         User user = userService.findByLogin(principal.getName())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User by name: %s not exist", principal.getName())));
         return user.getTalksAsListener()
                 .stream()
-                .map(ScheduleItemDto::new)
+                .map(ScheduleItemResp::new)
                 .collect(Collectors.toList());
     }
 
@@ -53,7 +52,9 @@ public class UsersSchedulesFacade {
                 .orElseThrow(() -> new ResourceNotFoundException("User by username: " + name + " not exist"));
         ScheduleItem talk = scheduleService.findById(scheduleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Talk by id: " + scheduleId + " not exist"));
+        if (talk.getListeners().contains(user)) throw new SubscribeException("You are already subscribed this talk");
         talk.addListener(user);
+//        mailService.greatMessage(user,talk);
     }
 
     @Transactional
@@ -64,5 +65,27 @@ public class UsersSchedulesFacade {
         ScheduleItem talk = scheduleService.findById(scheduleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Talk by id: " + scheduleId + " not exist"));
         talk.removeListener(user);
+    }
+
+    @Transactional
+    public void cleanSpeakerWithSchedule(Long speakerId) {
+        User speaker = userService.findById(speakerId)
+                .orElseThrow(() -> new ResourceNotFoundException("User by id : " + speakerId + " not exist"));
+
+        List<ScheduleItem> scheduleItems = scheduleService.findAllBySpeaker(speaker);
+        scheduleItems.forEach(scheduleItem -> {
+            scheduleItem.getTalk().getSpeakers().remove(speaker);
+        });
+
+        List<ScheduleItem> deletedSchedules = new ArrayList<>();
+        for (ScheduleItem si : scheduleItems) {
+            if (si.getTalk().getSpeakers().size() == 0 || si.getTalk().getOwner().equals(speaker)) {
+                deletedSchedules.add(si);
+            }
+        }
+        scheduleItems.removeIf(scheduleItem -> scheduleItem.getTalk().getSpeakers().size() == 0);
+
+        scheduleService.save(scheduleItems);
+        scheduleService.removeAll(deletedSchedules);
     }
 }
