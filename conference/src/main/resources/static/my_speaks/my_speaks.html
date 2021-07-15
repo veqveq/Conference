@@ -11,11 +11,11 @@
                     <option ng-repeat="r in roomList" value="1">{{r}}</option>
                 </select>
                 <div class="date-changer">
-                    <input ng-model="updTalk.startTime" class="time start-time" type="datetime-local"/>
-                    <input ng-model="updTalk.endTime" class="time end-time" type="datetime-local"/>
+                    <input class="time start-time" type="datetime-local"/>
+                    <input class="time end-time" type="datetime-local"/>
                 </div>
                 <div class="mb-3">
-                    <textarea ng-model="updTalk.text" class="text form-control" id="message-text"></textarea>
+                    <textarea class="text form-control" id="message-text"></textarea>
                 </div>
                 <ul class="list-group" ng-repeat="speaker in speakerList">
                     <li class="list-group-item">
@@ -78,7 +78,45 @@
             </tbody>
         </table>
     </div>
+
     <div ng-show="myTalksList.length == 0">
         <h2>Вы не выступаете ни на одной конференции</h2>
+    </div>
+
+    <div ng-click="initialModal()" class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
+                    + Создать новый доклад
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <form ng-submit="createTalk()">
+                        <select id="room-select" class="new-room form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+                            <option ng-repeat="r in roomList" value="1">{{r}}</option>
+                        </select>
+                        <div class="date-changer">
+                            <input class="time new-start-time" type="datetime-local" required/>
+                            <input class="time new-end-time" type="datetime-local" required/>
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="new-text form-control" id="message-text2" required></textarea>
+                        </div>
+                        <ul class="list-group" ng-repeat="speaker in speakerList">
+                            <li class="list-group-item">
+                                <input class="new-speakers-check form-check-input me-1" type="checkbox"
+                                       value="{{speaker.id}}">
+                                {{speaker.login}}
+                            </li>
+                        </ul>
+                        <button type="button" class="btn btn-danger">Очистить</button>
+                        <button type="submit" class="btn btn-primary">Создать доклад</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

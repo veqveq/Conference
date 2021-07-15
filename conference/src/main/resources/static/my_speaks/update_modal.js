@@ -60,6 +60,8 @@ angular.module('conference').controller('modalController', function ($scope, $ht
             window.alert("Доклад удалён!")
             modal.hide();
             $route.reload();
+            $scope.roomList = null;
+            $scope.speakerList = null;
         })
     }
 
@@ -69,6 +71,8 @@ angular.module('conference').controller('modalController', function ($scope, $ht
                 window.alert("Доклад успешно обновлён!")
                 modal.hide();
                 $route.reload();
+                $scope.roomList = null;
+                $scope.speakerList = null;
             })
     }
 
