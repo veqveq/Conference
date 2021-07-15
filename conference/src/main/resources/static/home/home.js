@@ -18,9 +18,12 @@ angular.module('conference').controller('homeController', function ($scope, $htt
                 talkId: talkId
             },
         })
-            .then(function () {
+            .then(function successCallback(response) {
                 window.alert("Вы зарегистрировались на лекцию");
                 $route.reload();
-            })
+            }, function errorCallback() {
+                window.alert("Вы уже зарегистрированы на эту лекцию");
+            });
     }
 });
+

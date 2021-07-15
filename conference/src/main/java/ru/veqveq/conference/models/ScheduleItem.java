@@ -19,14 +19,16 @@ public class ScheduleItem {
     @ManyToOne
     @JoinColumn(name = "room_id_fld")
     private Room room;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            orphanRemoval = true)
     @JoinColumn(name = "talk_id_fld")
     private Talk talk;
     @Column(name = "start_time_fld")
     private LocalDateTime startTime;
     @Column(name = "end_time_fld")
     private LocalDateTime endTime;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "schedule_listeners_tbl",
             joinColumns = @JoinColumn(name = "schedule_id_fld"),
             inverseJoinColumns = @JoinColumn(name = "listener_id_fld"))

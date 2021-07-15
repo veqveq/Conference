@@ -10,7 +10,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ScheduleItemReq {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private Long id;
     private String room;
@@ -21,12 +20,10 @@ public class ScheduleItemReq {
     private List<Long> speakers;
 
     public LocalDateTime getStartTime() {
-        return LocalDateTime.parse(startTime, DATE_TIME_FORMATTER);
+        return LocalDateTime.parse(startTime);
     }
 
     public LocalDateTime getEndTime() {
-        return LocalDateTime.parse(endTime, DATE_TIME_FORMATTER);
+        return LocalDateTime.parse(endTime);
     }
-
-
 }

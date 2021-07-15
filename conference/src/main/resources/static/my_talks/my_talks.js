@@ -1,4 +1,4 @@
-angular.module('conference').controller('talksController', function ($scope, $http) {
+angular.module('conference').controller('talksController', function ($scope, $http, $route) {
     const rootPath = 'http://localhost:8189/conference';
     const apiPath = rootPath + '/api/v1/schedule'
 
@@ -6,7 +6,6 @@ angular.module('conference').controller('talksController', function ($scope, $ht
         $http.get(apiPath+'/my_talks')
             .then(function (response) {
                 $scope.myTalksList = response.data;
-                console.log($scope.myTalksList)
             })
     }
 
@@ -20,7 +19,7 @@ angular.module('conference').controller('talksController', function ($scope, $ht
         })
             .then(function () {
                 window.alert("Вы отказались от посещения доклада");
-                $scope.getMyTalks();
+                $route.reload()
             })
     }
 });

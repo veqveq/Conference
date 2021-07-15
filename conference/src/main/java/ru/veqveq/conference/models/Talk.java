@@ -20,10 +20,10 @@ public class Talk {
     private Long id;
     @Column(name = "text_fld")
     private String text;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id_fld")
     private User owner;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "talks_speakers_tbl",
             joinColumns = @JoinColumn(name = "talk_id_fld"),
             inverseJoinColumns = @JoinColumn(name = "speaker_id_fld"))

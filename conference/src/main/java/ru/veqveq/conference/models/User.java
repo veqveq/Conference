@@ -20,9 +20,12 @@ public class User {
     @OneToOne
     @JoinColumn(name = "role_id_fld")
     private Role role;
-    @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user",
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     private UserInfo userInfo;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     @JoinTable(name = "schedule_listeners_tbl",
             joinColumns = @JoinColumn(name = "listener_id_fld"),
             inverseJoinColumns = @JoinColumn(name = "schedule_id_fld"))

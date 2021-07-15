@@ -66,4 +66,8 @@ public class ScheduleService {
     public Optional<ScheduleItem> findById(Long id) {
         return scheduleRepository.findById(id);
     }
+
+    public void remove(Long id) {
+        scheduleRepository.deleteById(id);
+    }
 }

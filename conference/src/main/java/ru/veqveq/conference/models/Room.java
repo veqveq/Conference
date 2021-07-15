@@ -15,6 +15,7 @@ public class Room {
     private Short id;
     @Column(name = "number_fld")
     private String number;
-    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "room",
+            fetch = FetchType.LAZY)
     private List<ScheduleItem> scheduleItemList;
 }

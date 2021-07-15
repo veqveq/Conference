@@ -30,6 +30,5 @@ angular.module('conference').controller('speaksController', function ($scope, $h
     $scope.initialModal = function () {
         $scope.getRoomList();
         $scope.getSpeakers();
-        console.log($scope.speakerList)
     }
 });

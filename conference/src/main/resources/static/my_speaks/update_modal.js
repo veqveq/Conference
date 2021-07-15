@@ -1,10 +1,11 @@
-angular.module('conference').controller('modalController', function ($scope, $http, $route) {
+angular.module('conference').controller('modalController', function ($scope, $http, $route, $localStorage) {
     const rootPath = 'http://localhost:8189/conference';
     const apiPath = rootPath + '/api/v1/schedule'
 
     let exampleModal = document.getElementById('changeTalk');
     let speakers = exampleModal.getElementsByClassName('speakers-check');
     let selector = exampleModal.querySelector('.modal-body select');
+    let modal = new bootstrap.Modal(document.getElementById('changeTalk'));
 
 
     exampleModal.addEventListener('show.bs.modal', function (event) {
@@ -32,7 +33,7 @@ angular.module('conference').controller('modalController', function ($scope, $ht
         }
     })
 
-    exampleModal.addEventListener('hide.bs.modal', function (event) {
+    exampleModal.addEventListener('hide.bs.modal', function () {
         for (let i = 0; i < speakers.length; i++) {
             speakers[i].checked = false;
         }
@@ -49,12 +50,24 @@ angular.module('conference').controller('modalController', function ($scope, $ht
 
     $scope.delete = function () {
         console.log($scope.talkId);
+        $http({
+            method: 'DELETE',
+            url: apiPath,
+            params: {
+                talkId: $scope.sheduleId != null ? $scope.sheduleId : null
+            }
+        }).then(function () {
+            window.alert("Доклад удалён!")
+            modal.hide();
+            $route.reload();
+        })
     }
 
     $scope.update = function () {
         $http.post(apiPath + '/my_speaks', $scope.createDto())
-            .then(function (response) {
+            .then(function () {
                 window.alert("Доклад успешно обновлён!")
+                modal.hide();
                 $route.reload();
             })
     }
@@ -68,7 +81,7 @@ angular.module('conference').controller('modalController', function ($scope, $ht
                 speakersId.push(speakers[i].value);
             }
         }
-        let updTalk = {
+        return {
             id: $scope.sheduleId,
             room: room,
             startTime: $(".start-time").val(),
@@ -76,8 +89,6 @@ angular.module('conference').controller('modalController', function ($scope, $ht
             talkId: $scope.talkId,
             text: $(".text").val(),
             speakers: speakersId
-        }
-        console.log(updTalk);
-        return updTalk;
+        };
     }
 });

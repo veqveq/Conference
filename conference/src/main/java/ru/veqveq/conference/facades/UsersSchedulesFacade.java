@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.veqveq.conference.dto.ScheduleItemResp;
 import ru.veqveq.conference.exceptions.ResourceNotFoundException;
+import ru.veqveq.conference.exceptions.SubscribeException;
 import ru.veqveq.conference.models.ScheduleItem;
 import ru.veqveq.conference.models.User;
 import ru.veqveq.conference.services.MailService;
@@ -49,6 +50,7 @@ public class UsersSchedulesFacade {
                 .orElseThrow(() -> new ResourceNotFoundException("User by username: " + name + " not exist"));
         ScheduleItem talk = scheduleService.findById(scheduleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Talk by id: " + scheduleId + " not exist"));
+        if (talk.getListeners().contains(user)) throw new SubscribeException("You are already subscribed this talk");
         talk.addListener(user);
 //        mailService.greatMessage(user,talk);
     }

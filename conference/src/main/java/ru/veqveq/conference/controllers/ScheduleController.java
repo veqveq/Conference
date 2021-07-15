@@ -54,4 +54,9 @@ public class ScheduleController {
     public void updateSchedule(@RequestBody ScheduleItemReq newSchedule) {
         creatorFacade.updateSchedule(newSchedule);
     }
+
+    @DeleteMapping
+    public void delete(Principal principal, @RequestParam Long talkId) {
+        creatorFacade.remove(principal, talkId);
+    }
 }

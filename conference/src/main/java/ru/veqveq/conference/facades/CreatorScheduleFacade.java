@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.veqveq.conference.dto.ScheduleItemReq;
 import ru.veqveq.conference.dto.ScheduleItemResp;
+import ru.veqveq.conference.dto.TalkDto;
+import ru.veqveq.conference.dto.UserDto;
+import ru.veqveq.conference.exceptions.IncorrectOwnerException;
 import ru.veqveq.conference.exceptions.ResourceNotFoundException;
 import ru.veqveq.conference.exceptions.TimeIntervalIntersectionException;
 import ru.veqveq.conference.models.*;
@@ -53,5 +56,22 @@ public class CreatorScheduleFacade {
         Talk talk = talkService.update(scheduleItemReq, speakers);
         Room room = roomService.findByNumber(scheduleItemReq.getRoom()).orElseThrow(() -> new ResourceNotFoundException("Room by number: " + scheduleItemReq.getRoom() + " not found"));
         scheduleService.update(scheduleItemReq, talk, room);
+    }
+
+    @Transactional
+    public void remove(Principal principal, Long talkId) {
+        if (!checkOwner(principal, talkId))
+            throw new IncorrectOwnerException("Insufficient rights to edit the conference");
+        scheduleService.remove(talkId);
+    }
+
+    private boolean checkOwner(Principal principal, User owner) {
+        User principalUser = userService.findByLogin(principal.getName()).orElseThrow(() -> new ResourceNotFoundException(String.format("User by id: %s not found", principal.getName())));
+        return principalUser.equals(owner);
+    }
+
+    private boolean checkOwner(Principal principal, Long talkId) {
+        User owner = talkService.findById(talkId).orElseThrow(() -> new ResourceNotFoundException(String.format("Talk by id: %s not found", talkId))).getOwner();
+        return checkOwner(principal, owner);
     }
 }
