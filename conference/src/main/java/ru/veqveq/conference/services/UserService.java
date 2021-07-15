@@ -7,11 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.veqveq.conference.dto.UserDto;
+import ru.veqveq.conference.dto.UserDtoResp;
 import ru.veqveq.conference.exceptions.ResourceNotFoundException;
 import ru.veqveq.conference.models.Role;
 import ru.veqveq.conference.models.User;
-import ru.veqveq.conference.repositories.RoleRepository;
 import ru.veqveq.conference.repositories.UserRepository;
 
 import java.util.Collection;
@@ -25,17 +24,17 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
-    public List<UserDto> findAll() {
+    public List<UserDtoResp> findAll() {
         return userRepository.findAll()
                 .stream()
-                .map(UserDto::new)
+                .map(UserDtoResp::new)
                 .collect(Collectors.toList());
     }
 
-    public List<UserDto> findAllByRole(String role) {
+    public List<UserDtoResp> findAllByRole(String role) {
         return userRepository.findAllByRole_Role(role)
                 .stream()
-                .map(UserDto::new)
+                .map(UserDtoResp::new)
                 .collect(Collectors.toList());
     }
 
@@ -59,5 +58,9 @@ public class UserService implements UserDetailsService {
 
     private Collection<? extends GrantedAuthority> mapUserRolesToGrantedAuthorities(Role role) {
         return Collections.singleton(new SimpleGrantedAuthority(role.getRole()));
+    }
+
+    public void remove(Long userId) {
+        userRepository.deleteById(userId);
     }
 }

@@ -13,12 +13,12 @@ public class TalkDto {
     private Long id;
     private String text;
     private String owner;
-    private List<UserDto> speakers;
+    private List<UserDtoResp> speakers;
 
     public TalkDto(Talk talk) {
         this.id = talk.getId();
         this.text = talk.getText();
         this.owner = talk.getOwner().getLogin();
-        this.speakers = talk.getSpeakers().stream().map(UserDto::new).collect(Collectors.toList());
+        this.speakers = talk.getSpeakers().stream().map(UserDtoResp::new).collect(Collectors.toList());
     }
 }

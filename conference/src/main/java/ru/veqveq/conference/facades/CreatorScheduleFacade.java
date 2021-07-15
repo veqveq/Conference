@@ -4,12 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.veqveq.conference.dto.ScheduleItemReq;
-import ru.veqveq.conference.dto.ScheduleItemResp;
-import ru.veqveq.conference.dto.TalkDto;
-import ru.veqveq.conference.dto.UserDto;
 import ru.veqveq.conference.exceptions.IncorrectOwnerException;
 import ru.veqveq.conference.exceptions.ResourceNotFoundException;
-import ru.veqveq.conference.exceptions.TimeIntervalIntersectionException;
 import ru.veqveq.conference.models.*;
 import ru.veqveq.conference.services.RoomService;
 import ru.veqveq.conference.services.ScheduleService;
@@ -18,7 +14,6 @@ import ru.veqveq.conference.services.UserService;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service

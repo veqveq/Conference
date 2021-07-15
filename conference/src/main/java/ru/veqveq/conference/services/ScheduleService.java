@@ -70,4 +70,13 @@ public class ScheduleService {
     public void remove(Long id) {
         scheduleRepository.deleteById(id);
     }
+
+    public void save(List<ScheduleItem> scheduleItems) {
+        scheduleRepository.saveAll(scheduleItems);
+    }
+
+
+    public void removeAll(List<ScheduleItem> deletedSchedules) {
+        scheduleRepository.deleteAll(deletedSchedules);
+    }
 }

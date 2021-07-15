@@ -13,7 +13,9 @@ import ru.veqveq.conference.services.ScheduleService;
 import ru.veqveq.conference.services.UserService;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,5 +65,27 @@ public class UsersSchedulesFacade {
         ScheduleItem talk = scheduleService.findById(scheduleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Talk by id: " + scheduleId + " not exist"));
         talk.removeListener(user);
+    }
+
+    @Transactional
+    public void cleanSpeakerWithSchedule(Long speakerId) {
+        User speaker = userService.findById(speakerId)
+                .orElseThrow(() -> new ResourceNotFoundException("User by id : " + speakerId + " not exist"));
+
+        List<ScheduleItem> scheduleItems = scheduleService.findAllBySpeaker(speaker);
+        scheduleItems.forEach(scheduleItem -> {
+            scheduleItem.getTalk().getSpeakers().remove(speaker);
+        });
+
+        List<ScheduleItem> deletedSchedules = new ArrayList<>();
+        for (ScheduleItem si : scheduleItems) {
+            if (si.getTalk().getSpeakers().size() == 0 || si.getTalk().getOwner().equals(speaker)) {
+                deletedSchedules.add(si);
+            }
+        }
+        scheduleItems.removeIf(scheduleItem -> scheduleItem.getTalk().getSpeakers().size() == 0);
+
+        scheduleService.save(scheduleItems);
+        scheduleService.removeAll(deletedSchedules);
     }
 }

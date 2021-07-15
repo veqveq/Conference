@@ -1,3 +1,78 @@
-<div>
+<div ng-init="getUsers()" ng-controller="adminController">
     <h2>Панель администратора</h2>
+    <table id="admin-pane" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Логин</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Возраст</th>
+            <th scope="col">Телефон</th>
+            <th scope="col">E-Mail</th>
+            <th scope="col">Роль</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in userList">
+            <td>{{user.login}}</td>
+            <td>{{user.userInfo.firstName}}</td>
+            <td>{{user.userInfo.lastName}}</td>
+            <td>{{user.userInfo.age}}</td>
+            <td>{{user.userInfo.phone}}</td>
+            <td>{{user.userInfo.email}}</td>
+            <td>
+                <div ng-init="getRoles()" class="btn-group">
+                    <button ng-disabled="checkMe((user.login))" class="btn btn-secondary dropdown-toggle"
+                            type="button" id="defaultDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                            aria-expanded="false">
+                        {{user.roleDto.role}}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="defaultDropdown">
+                        <li ng-repeat="role in roleList">
+                            <a class="dropdown-item" ng-click="changeRole(role.id,user.id)">{{role.role}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+            <td>
+                <button ng-show="!checkMe(user.login)" ng-click="delete(user.id)" type="button" class="btn btn-danger">
+                    Удалить
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
+                    + Создать пользователя
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <form ng-submit="createUser()">
+                        <div class="input-group">
+                            <span class="input-group-text">Логин и пароль</span>
+                            <input ng-model="newUser.firstName" type="text" aria-label="Имя" class="form-control"
+                                   required>
+                            <input ng-model="newUser.lastName" type="text" aria-label="Фамилия" class="form-control"
+                                   required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="new-user-sel">Роль</label>
+                            <select class="form-select" id="new-user-sel" required>
+                                <option ng-repeat="role in roleList" value="{{role.id}}">{{role.role}}</option>
+                            </select>
+                        </div>
+                        <button type="button" ng-click="cleanForm()" class="btn btn-danger">Очистить</button>
+                        <button type="submit" class="btn btn-primary">Создать учетную запись</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -3,7 +3,7 @@ package ru.veqveq.conference.models;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.veqveq.conference.dto.TalkDto;
-import ru.veqveq.conference.dto.UserDto;
+import ru.veqveq.conference.dto.UserDtoResp;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,7 +20,7 @@ public class Talk {
     private Long id;
     @Column(name = "text_fld")
     private String text;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id_fld")
     private User owner;
     @ManyToMany(fetch = FetchType.LAZY)
@@ -63,7 +63,7 @@ public class Talk {
     public boolean containSpeakerList(TalkDto talkDto) {
         if (speakers.size() != talkDto.getSpeakers().size()) return false;
         List<String> speakersLogin = speakers.stream().map(User::getLogin).collect(Collectors.toList());
-        for (UserDto dto : talkDto.getSpeakers()) {
+        for (UserDtoResp dto : talkDto.getSpeakers()) {
             if (speakersLogin.contains(dto.getLogin())) return false;
         }
         return true;
