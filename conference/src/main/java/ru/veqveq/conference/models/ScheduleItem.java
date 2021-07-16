@@ -2,6 +2,7 @@ package ru.veqveq.conference.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.veqveq.conference.exceptions.ResourceNotFoundException;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -39,6 +40,7 @@ public class ScheduleItem {
     }
 
     public void removeListener(User user) {
+        if (!listeners.contains(user)) throw new ResourceNotFoundException("User not subscribed in this task");
         for (User u : listeners) {
             if (u.getId().equals(user.getId())) {
                 listeners.remove(u);
