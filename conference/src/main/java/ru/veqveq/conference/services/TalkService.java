@@ -37,8 +37,4 @@ public class TalkService {
         talkRepository.save(talk);
         return talk;
     }
-
-    public void remove(Long talkId) {
-        talkRepository.deleteById(talkId);
-    }
 }

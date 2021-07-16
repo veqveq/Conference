@@ -2,12 +2,10 @@ package ru.veqveq.conference.facades;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.veqveq.conference.dto.ChangeRoleDto;
 import ru.veqveq.conference.dto.UserDtoReq;
-import ru.veqveq.conference.dto.UserDtoResp;
 import ru.veqveq.conference.exceptions.ResourceNotFoundException;
 import ru.veqveq.conference.models.Role;
 import ru.veqveq.conference.models.User;
@@ -19,6 +17,7 @@ import ru.veqveq.conference.services.UserService;
 public class UsersRolesFacade {
     private final UserService userService;
     private final RoleService roleService;
+    private final UsersSchedulesFacade usersSchedulesFacade;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Transactional
@@ -26,8 +25,10 @@ public class UsersRolesFacade {
         User user = userService.findById(changeRoleDto.getUserId())
                 .orElseThrow(
                         () -> new ResourceNotFoundException(String.format("User by id: %d not found", changeRoleDto.getUserId())));
+        if (user.getRole().getId().equals(changeRoleDto.getRoleId())) return;
         Role newRole = roleService.findById(changeRoleDto.getRoleId())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Role by id: %s not found", changeRoleDto.getRoleId())));
+        if (newRole.getRole().equals("ROLE_LISTENER")) usersSchedulesFacade.cleanSpeakerWithSchedule(user);
         user.setRole(newRole);
         userService.saveOrUpdate(user);
     }
