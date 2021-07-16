@@ -2,12 +2,9 @@ package ru.veqveq.conference.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.veqveq.conference.dto.TalkDto;
-import ru.veqveq.conference.dto.UserDtoResp;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "talks_tbl")
@@ -58,14 +55,5 @@ public class Talk {
         this.text = builder.text;
         this.owner = builder.owner;
         this.speakers = builder.speakers;
-    }
-
-    public boolean containSpeakerList(TalkDto talkDto) {
-        if (speakers.size() != talkDto.getSpeakers().size()) return false;
-        List<String> speakersLogin = speakers.stream().map(User::getLogin).collect(Collectors.toList());
-        for (UserDtoResp dto : talkDto.getSpeakers()) {
-            if (speakersLogin.contains(dto.getLogin())) return false;
-        }
-        return true;
     }
 }

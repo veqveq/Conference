@@ -54,7 +54,7 @@ public class UsersSchedulesFacade {
                 .orElseThrow(() -> new ResourceNotFoundException("Talk by id: " + scheduleId + " not exist"));
         if (talk.getListeners().contains(user)) throw new SubscribeException("You are already subscribed this talk");
         talk.addListener(user);
-//        mailService.greatMessage(user,talk);
+        mailService.greatMessage(user,talk);
     }
 
     @Transactional
@@ -68,10 +68,7 @@ public class UsersSchedulesFacade {
     }
 
     @Transactional
-    public void cleanSpeakerWithSchedule(Long speakerId) {
-        User speaker = userService.findById(speakerId)
-                .orElseThrow(() -> new ResourceNotFoundException("User by id : " + speakerId + " not exist"));
-
+    public void cleanSpeakerWithSchedule(User speaker) {
         List<ScheduleItem> scheduleItems = scheduleService.findAllBySpeaker(speaker);
         scheduleItems.forEach(scheduleItem -> {
             scheduleItem.getTalk().getSpeakers().remove(speaker);
@@ -87,5 +84,12 @@ public class UsersSchedulesFacade {
 
         scheduleService.save(scheduleItems);
         scheduleService.removeAll(deletedSchedules);
+    }
+
+    @Transactional
+    public void cleanSpeakerWithSchedule(Long speakerId) {
+        User speaker = userService.findById(speakerId)
+                .orElseThrow(() -> new ResourceNotFoundException("User by id : " + speakerId + " not exist"));
+        cleanSpeakerWithSchedule(speaker);
     }
 }
