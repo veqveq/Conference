@@ -1,12 +1,14 @@
 package ru.veqveq.conference.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.veqveq.conference.models.Room;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@NoArgsConstructor
 public class RoomDto {
     private Short id;
     private String number;
