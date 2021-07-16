@@ -18,6 +18,7 @@ public class MailService {
 
     @Async("threadPoolTaskExecutor")
     public void sendMessage(User user, String subject, String message) {
+        if (user.getUserInfo().getEMail() == null) return;
         final SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom("WA.test.conf.smtp@gmail.com");
         mail.setTo(user.getUserInfo().getEMail());
